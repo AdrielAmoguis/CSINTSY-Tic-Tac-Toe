@@ -7,7 +7,7 @@ public class TestModel {
         Scanner kb = new Scanner(System.in);
         Game game = new Game();
         // Human starts first
-        game.newGame(1);
+        game.newGame(2);
         /* Human Wins
         System.out.println("Game status: " + game.getStatus());
         game.cPlayerMove(0,0);
@@ -49,7 +49,7 @@ public class TestModel {
         System.out.println("Game status: " + game.getStatus());
         */
 
-        // AI Test : Level 0
+        // AI Test
         while(game.getStatus() == 999){
             game.displayBoard();
             // if human turn
@@ -61,7 +61,8 @@ public class TestModel {
                 game.cPlayerMove(row, col);
             }
             else{
-                game.AI_randomMove();
+                //game.AI_randomMove();
+                game.AI_bestMove();
             }
         }
         // display end result

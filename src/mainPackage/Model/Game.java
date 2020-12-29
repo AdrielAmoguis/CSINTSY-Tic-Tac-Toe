@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 // Reference: https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe.html
-public class Game{
+public class Game implements Minimax{
     /**
      * Represents the board.
      * The board is filled with values of either 0, 1, or 2.
@@ -89,7 +89,7 @@ public class Game{
                 if (board[row][col] == 0){
                     board[row][col] = AI_Turn;
                     // get the score after attempting this move
-                    int score = checkStatus();
+                    int score = checkStatus(board);
                     // revert back to original board state
                     board[row][col] = 0;
                     // if move is a winning move for AI
@@ -122,7 +122,7 @@ public class Game{
      * Either ONGOING, PLAYER_WIN/AI_WIN, or DRAW.
      */
     public void updateStatus(){
-        status = checkStatus();
+        status = checkStatus(board);
     }
 
     /**
@@ -131,7 +131,7 @@ public class Game{
      * Returns one of the following: -1 : AI_WIN | 1 : PLAYER_WIN | 0 : TIED | 999 : ONGOING
      * @return returns the current status of the game
      */
-    public int checkStatus() {
+    public int checkStatus(int[][] board) {
         // check if there is already a winner
         // check rows
         for (int row = 0; row < ROWS; row++){
@@ -182,7 +182,7 @@ public class Game{
         }
         return true;  // no empty cell, it's a draw
     }
-/*
+
     public void AI_bestMove(){
         int bestScore = Integer.MIN_VALUE;
         int targetRow = 999, targetCol= 999;
@@ -202,7 +202,7 @@ public class Game{
         }
         cPlayerMove(targetRow, targetCol);
     }
-*/
+
     /**
      * Returns the current board state of the game.
      * @return the current board state of the game.
@@ -289,13 +289,52 @@ public class Game{
         }
     }
 
-/*
+
     @Override
     public int minimax(int[][] board, boolean isMax) {
-        return 1;
+        int status = checkStatus(board);
+        int bestScore;
+        // Have reached a leaf node (base case)
+        if (status != 999)
+            return status;
+        // AI is maximizing its best score
+        if (isMax){
+            bestScore = Integer.MIN_VALUE;
+            for (int row = 0; row < ROWS; row++){
+                for (int col = 0; col < COLS; col++){
+                    // available move
+                    if (board[row][col] == 0){
+                        board[row][col] = AI_Turn;
+                        // compute score
+                        int score = minimax(board, false);
+                        // reset board state
+                        board[row][col] = 0;
+                        bestScore = Math.max(score, bestScore);
+                    }
+                }
+            }
+        }
+        // Player is minimizing the AI's best score
+        else{
+            bestScore = Integer.MAX_VALUE;
+            for (int row = 0; row < ROWS; row++){
+                for (int col = 0; col < COLS; col++){
+                    // available move
+                    if (board[row][col] == 0){
+                        board[row][col] = playerTurn;
+                        // compute score
+                        int score = minimax(board, true);
+                        // reset board state
+                        board[row][col] = 0;
+                        bestScore = Math.min(score, bestScore);
+                    }
+                }
+            }
+        }
+        return bestScore;
     }
 
-*/
+
 }
 
 
