@@ -1,7 +1,10 @@
 package mainPackage.Model;
 
+import java.util.Scanner;
+
 public class TestModel {
     public static void main(String[] args){
+        Scanner kb = new Scanner(System.in);
         Game game = new Game();
         // Human starts first
         game.newGame(1);
@@ -45,5 +48,25 @@ public class TestModel {
         game.displayBoard();
         System.out.println("Game status: " + game.getStatus());
         */
+
+        // AI Test : Level 0
+        while(game.getStatus() == 999){
+            game.displayBoard();
+            // if human turn
+            if (game.getCurrentPlayer() == game.getPlayerTurn()){
+                // ask for input
+                System.out.print("Enter [row, col]: ");
+                int row = kb.nextInt();
+                int col = kb.nextInt();
+                game.cPlayerMove(row, col);
+            }
+            else{
+                game.AI_randomMove();
+            }
+        }
+        // display end result
+        game.displayBoard();
+        System.out.println("End game status: " + game.getStatus());
+
     }
 }

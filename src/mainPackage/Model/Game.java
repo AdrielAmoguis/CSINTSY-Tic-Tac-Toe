@@ -1,6 +1,9 @@
 package mainPackage.Model;
+import java.time.LocalDateTime;
+import java.util.*;
 
-public class Game {
+// Reference: https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe.html
+public class Game{
     /**
      * Represents the board.
      * The board is filled with values of either 0, 1, or 2.
@@ -16,15 +19,15 @@ public class Game {
     /**
      * Represents if Player went first or second. Determines the symbol to be displayed X or O
      */
-    public int playerTurn;
+    private int playerTurn;
     /**
      * Represents if AI went first or second.
      */
-    public int AI_Turn;
+    private int AI_Turn;
     /**
      * Represents the current status of the game. Refer to macros.
      */
-    public int status;
+    private int status;
 
     // MACROS:
     public static final int ROWS = 3;
@@ -56,7 +59,6 @@ public class Game {
         }
         else
             System.out.println("[Game]: Error in newGame -> playerTurn = " + playerTurn);
-
     }
 
     /**
@@ -67,48 +69,103 @@ public class Game {
     public void cPlayerMove(int row, int col){
         if (validMove(row, col)){
             board[row][col] = currentPlayer;
-            updateStatus(row, col);
+            updateStatus();
             nextPlayer();
         }
     }
 
     /**
-     * Updates the current status of the game after current player made a move at (currentRow, currentCol).
-     * Either ONGOING, PLAYER_WIN/AI_WIN, or DRAW.
-     * @param currentRow row where currentPlayer made a move
-     * @param currentCol column where currentPlayer made a move
+     * Level 0 AI Rational Behavior.
+     * The agent makes random (but valid) moevs, regardless of the past moves. Note at even the lowest level,
+     * there is a record of past moves and current configuration of the board to be able to make valid moves.
+     * Also, there is already a DETECTION OF ANY WINNING MOVE.
      */
-    public void updateStatus(int currentRow, int currentCol){
-        if (hasWon(currentRow, currentCol)) {  // check if winning move
-            // if current player is the human player, declare player win, otherwise AI wins
-            status = currentPlayer == playerTurn ? PLAYER_WIN : AI_WIN;
-        } else if (isDraw()) {  // check for draw
-            status = DRAW;
+    public void AI_randomMove(){
+        List<int[]> validMoves = new ArrayList<>();
+        boolean hasWon = false;
+        for (int row = 0; row < ROWS && !hasWon; row++){
+            for (int col = 0; col < COLS && !hasWon; col++){
+                // if possible move
+                if (board[row][col] == 0){
+                    board[row][col] = AI_Turn;
+                    // get the score after attempting this move
+                    int score = checkStatus();
+                    // revert back to original board state
+                    board[row][col] = 0;
+                    // if move is a winning move for AI
+                    if (score == 1){
+                        // AI immediately chooses the move
+                        cPlayerMove(row, col);
+                        hasWon = true;
+                        break;
+                    }
+                    // else append to list of possible moves
+                    int[] validMove = {row, col};
+                    validMoves.add(validMove);
+                }
+            }
         }
-        // Otherwise, the status is still ONGOING
+        // If AI has not found a winning move
+        if (!hasWon){
+            Random randomizer = new Random();
+            randomizer.setSeed(LocalDateTime.now().getNano());
+            // Randomly select from the list of possible moves
+            int[] chosenMove = validMoves.get(randomizer.nextInt(validMoves.size()));
+            // AI performs the randomly chosen move
+            cPlayerMove(chosenMove[0], chosenMove[1]);
+        }
+    }
+
+
+    /**
+     * Updates the current status of the game based on baord state.
+     * Either ONGOING, PLAYER_WIN/AI_WIN, or DRAW.
+     */
+    public void updateStatus(){
+        status = checkStatus();
     }
 
     /**
-     * Returns true if the player has won after placing at (currentRow, currentCol)
-     * @param currentRow row where player placed
-     * @param currentCol row where player placed
-     * @return true if the player has won
+     * Can be optimized further.
+     * Returns the current status of the game.
+     * Returns one of the following: -1 : AI_WIN | 1 : PLAYER_WIN | 0 : TIED | 999 : ONGOING
+     * @return returns the current status of the game
      */
-    public boolean hasWon(int currentRow, int currentCol) {
-        return (board[currentRow][0] == currentPlayer         // 3-in-the-row
-                && board[currentRow][1] == currentPlayer
-                && board[currentRow][2] == currentPlayer
-                || board[0][currentCol] == currentPlayer      // 3-in-the-column
-                && board[1][currentCol] == currentPlayer
-                && board[2][currentCol] == currentPlayer
-                || currentRow == currentCol            // 3-in-the-diagonal
-                && board[0][0] == currentPlayer
-                && board[1][1] == currentPlayer
-                && board[2][2] == currentPlayer
-                || currentRow + currentCol == 2  // 3-in-the-opposite-diagonal
-                && board[0][2] == currentPlayer
-                && board[1][1] == currentPlayer
-                && board[2][0] == currentPlayer);
+    public int checkStatus() {
+        // check if there is already a winner
+        // check rows
+        for (int row = 0; row < ROWS; row++){
+            if (board[row][0] == board[row][1] && board[row][0] == board[row][2] && board[row][0] != 0){
+                int winner = board[row][0];
+                // if the winner is the AI, return macro for AI
+                return winner == AI_Turn ? AI_WIN : PLAYER_WIN;
+            }
+        }
+        // check columns
+        for (int col = 0; col < COLS; col++){
+            if (board[0][col] == board[1][col] && board[0][col] == board[2][col] && board[0][col] != 0){
+                int winner = board[0][col];
+                return winner == AI_Turn ? AI_WIN : PLAYER_WIN;
+            }
+        }
+        // check right diagonal
+        if (board[0][0] == board[1][1] && board[0][0] == board[2][2] && board[0][0] != 0){
+            int winner = board[0][0];
+            return winner == AI_Turn ? AI_WIN : PLAYER_WIN;
+        }
+
+        // check left diagonal
+        if (board[0][2] == board[1][1] && board[0][2] == board[2][0] && board[0][2] != 0){
+            int winner = board[0][2];
+            return winner == AI_Turn ? AI_WIN : PLAYER_WIN;
+        }
+
+        // check if draw
+        if (isDraw())
+            return DRAW;
+
+        // else it's still ongoing
+        return ONGOING;
     }
 
     /**
@@ -125,7 +182,27 @@ public class Game {
         }
         return true;  // no empty cell, it's a draw
     }
-
+/*
+    public void AI_bestMove(){
+        int bestScore = Integer.MIN_VALUE;
+        int targetRow = 999, targetCol= 999;
+        for(int row = 0; row < ROWS; row++){
+            for(int col = 0; col < COLS; col++){
+                if(board[row][col] == 0){
+                    board[row][col] = AI_Turn;
+                    int score = minimax(board, false);
+                    if (score > bestScore){
+                        bestScore = score;
+                        targetRow = row;
+                        targetCol = col;
+                    }
+                    board[row][col] = 0; // reset
+                }
+            }
+        }
+        cPlayerMove(targetRow, targetCol);
+    }
+*/
     /**
      * Returns the current board state of the game.
      * @return the current board state of the game.
@@ -183,7 +260,6 @@ public class Game {
                 //System.out.println("[Game]: Invalid move");
                 return false;
             }
-
         }
         //System.out.println("[Game]: Invalid move");
         return false;
@@ -212,4 +288,14 @@ public class Game {
             System.out.println();
         }
     }
+
+/*
+    @Override
+    public int minimax(int[][] board, boolean isMax) {
+        return 1;
+    }
+
+*/
 }
+
+
