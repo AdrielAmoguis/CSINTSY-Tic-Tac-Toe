@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
@@ -23,6 +24,8 @@ public class MainWindowController implements EventHandler<Event>
     @FXML
     Button startGame;
 
+    @FXML
+    CheckBox checkPlayAsX;
 
     // Controller Constructor
     public MainWindowController()
@@ -85,7 +88,7 @@ public class MainWindowController implements EventHandler<Event>
                 Stage primaryStage = (Stage) ((Button) ev.getSource()).getScene().getWindow();
 
                 // Set custom constructor
-                GameWindowController controller = new GameWindowController(this.rationality);
+                GameWindowController controller = new GameWindowController(this.rationality, this.checkPlayAsX.isSelected());
 
                 // Load the FXML File
                 Parent root = null;

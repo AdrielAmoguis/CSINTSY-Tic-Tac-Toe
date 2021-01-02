@@ -32,11 +32,16 @@ public class GameWindowController implements EventHandler<Event>
     GridPane mainGrid;
 
     // Controller Constructor
-    public GameWindowController(int rationality)
+    public GameWindowController(int rationality, boolean playAsX)
     {
         this.rationality = rationality;
         this.gameInstance = new Game();
-        this.gameInstance.newGame(1);
+
+        if(playAsX)
+            this.gameInstance.newGame(1);
+        else
+            this.gameInstance.newGame(2);
+
         this.grid = new ImageView[3][3];
     }
 

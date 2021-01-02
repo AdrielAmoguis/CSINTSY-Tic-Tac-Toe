@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -23,12 +24,17 @@
       <ComboBox fx:id="rationalityDropdown" layoutX="196.0" layoutY="255.0" onAction="#handle" prefWidth="150.0" promptText="Difficulty" />
       <AnchorPane layoutX="170.0" layoutY="307.0">
          <children>
-            <Button fx:id="startGame" layoutX="33.0" layoutY="-2.0" mnemonicParsing="false" onAction="#handle" text="Start Game">
+            <Button fx:id="startGame" layoutX="33.0" layoutY="10.0" mnemonicParsing="false" onAction="#handle" text="Start Game">
                <font>
                   <Font name="Comic Sans MS" size="20.0" />
                </font>
             </Button>
          </children>
       </AnchorPane>
+      <CheckBox fx:id="checkPlayAsX" layoutX="221.0" layoutY="287.0" mnemonicParsing="false" text="Play as X">
+         <font>
+            <Font name="Comic Sans MS" size="17.0" />
+         </font>
+      </CheckBox>
    </children>
 </AnchorPane>

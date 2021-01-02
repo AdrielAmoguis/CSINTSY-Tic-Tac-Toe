@@ -116,6 +116,16 @@ public class Game implements Minimax{
         }
     }
 
+    /**
+     * Level 1 AI Rational Behavior.
+     * the agent uses a hard-coded table that generates a move for every possible state/configuration;
+     * note that since there is a very large number (9!) of possible configurations, the “hard-coded table of moves”
+     * can make generalizations, take advantage of symmetries, perform some kind of clustering of configurations, and the like.
+     */
+    public void AI_tableMove()
+    {
+
+    }
 
     /**
      * Updates the current status of the game based on baord state.
