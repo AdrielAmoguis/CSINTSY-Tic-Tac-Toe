@@ -121,10 +121,60 @@ public class Game implements Minimax{
      * the agent uses a hard-coded table that generates a move for every possible state/configuration;
      * note that since there is a very large number (9!) of possible configurations, the “hard-coded table of moves”
      * can make generalizations, take advantage of symmetries, perform some kind of clustering of configurations, and the like.
+     *
+     * 
+     *
      */
     public void AI_tableMove()
     {
 
+    }
+
+    /**
+     * This is a helper method for AI_tableMove().
+     * This method checks if two boards are identical when taking symmetry into account.
+     * @return boolean - true if the two boards are symmetric. False otherwise.
+     */
+    private boolean isSymmetric(int[][] board_1, int[][] board_2)
+    {
+        // Create a copy of array 2
+        int[][] compareBoard = new int[3][3];
+
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 3; j++)
+                compareBoard[i][j] = board_2[i][j];
+
+        // Rotate 3 times
+        for(int i = 0; i < 3; i++)
+        {
+            if(Arrays.equals(board_1, compareBoard))
+            {
+                // isSymmetric
+                return true;
+            }
+
+            // Perform rotation
+            int[][] rotated = new int[3][3];
+
+            // Rotate Centerpieces
+            rotated[1][2] = compareBoard[0][1];
+            rotated[2][1] = compareBoard[1][2];
+            rotated[1][0] = compareBoard[2][1];
+            rotated[0][1] = compareBoard[1][0];
+
+            // Rotate Edges
+            rotated[0][2] = compareBoard[0][0];
+            rotated[2][2] = compareBoard[0][2];
+            rotated[2][0] = compareBoard[2][2];
+            rotated[0][0] = compareBoard[2][0];
+
+            // Copy Center
+            rotated[1][1] = compareBoard[1][1];
+
+            compareBoard = rotated;
+        }
+
+        return false;
     }
 
     /**

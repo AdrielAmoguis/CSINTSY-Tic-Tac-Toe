@@ -5,12 +5,17 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import mainPackage.Model.*;
 import javafx.event.Event;
@@ -31,17 +36,15 @@ public class GameWindowController implements EventHandler<Event>
     @FXML
     GridPane mainGrid;
 
+    @FXML
+    Button backButton;
+
     // Controller Constructor
     public GameWindowController(int rationality, boolean playAsX)
     {
         this.rationality = rationality;
         this.gameInstance = new Game();
-
-        if(playAsX)
-            this.gameInstance.newGame(1);
-        else
-            this.gameInstance.newGame(2);
-
+        this.gameInstance.newGame(playAsX ? 1 : 2);
         this.grid = new ImageView[3][3];
     }
 
@@ -49,7 +52,7 @@ public class GameWindowController implements EventHandler<Event>
     @FXML
     void initialize()
     {
-        // For each iteration, add an AnchorPane with an ImageView into the GridPane
+        // For each iteration, add a Pane with an ImageView into the GridPane
         for(int i = 0; i < 3; i++)
             for(int j = 0 ; j < 3; j++)
             {
@@ -158,6 +161,37 @@ public class GameWindowController implements EventHandler<Event>
     // ActionEvent Handler
     private void handle(ActionEvent ev)
     {
+        // Check for button
+        if(ev.getSource() instanceof Button)
+        {
+            Button button = (Button) ev.getSource();
+
+            // Check Button ID
+            if(button.getId().equals(this.backButton.getId()))
+            {
+                // Load main primaryStage
+                Stage primaryStage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
+
+                // Load the FXML File
+                Parent root = null;
+                try
+                {
+                    root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+                }
+                catch(Exception ex)
+                {
+                    ex.printStackTrace();
+                }
+
+                // Window Options
+                primaryStage.setTitle("Tic-Tac-Toe | AMOGUIS & SUN");
+                primaryStage.setResizable(false);
+
+                // Launch Window
+                primaryStage.setScene(new Scene(root));
+                primaryStage.show();
+            }
+        }
     }
 
     // Prompt
