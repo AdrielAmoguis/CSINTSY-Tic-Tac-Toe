@@ -1,6 +1,7 @@
 package mainPackage.Model;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.time.LocalTime;
 
 // Reference: https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe.html
 public class Game implements Minimax{
@@ -122,59 +123,159 @@ public class Game implements Minimax{
      * note that since there is a very large number (9!) of possible configurations, the “hard-coded table of moves”
      * can make generalizations, take advantage of symmetries, perform some kind of clustering of configurations, and the like.
      *
-     * 
+     * Our Implementation:
+     * Decision-based depending on the sequence of moves.
      *
      */
-    public void AI_tableMove()
+    public void AI_genericMove()
     {
+        // First: Check the board state - how far is the opponent from winning?
+        //   Check rows with consecutive opponent-owned tiles
+        //   Check if the opponent can win by filling in the last tile
+        //      Otherwise: move randomly
 
-    }
-
-    /**
-     * This is a helper method for AI_tableMove().
-     * This method checks if two boards are identical when taking symmetry into account.
-     * @return boolean - true if the two boards are symmetric. False otherwise.
-     */
-    private boolean isSymmetric(int[][] board_1, int[][] board_2)
-    {
-        // Create a copy of array 2
-        int[][] compareBoard = new int[3][3];
-
-        for(int i = 0; i < 3; i++)
-            for(int j = 0; j < 3; j++)
-                compareBoard[i][j] = board_2[i][j];
-
-        // Rotate 3 times
+        // Check per row for winning move
         for(int i = 0; i < 3; i++)
         {
-            if(Arrays.equals(board_1, compareBoard))
+            int[] row = { this.board[i][0], this.board[i][1], this.board[i][2] };
+            int rowSum = Arrays.stream(row).sum();
+
+            // Dependent on the AI's turn number
+
+            // Winning Condition
+            if(rowSum == this.getAI_Turn() * 2 && !Arrays.stream(row).anyMatch(x -> x == this.getPlayerTurn()))
             {
-                // isSymmetric
-                return true;
+                // Fill in the remaining space
+                for(int j = 0; j < 3; j++)
+                    if(row[j] == 0)
+                    {
+                        this.cPlayerMove(i, j);
+                        return;
+                    }
             }
 
-            // Perform rotation
-            int[][] rotated = new int[3][3];
-
-            // Rotate Centerpieces
-            rotated[1][2] = compareBoard[0][1];
-            rotated[2][1] = compareBoard[1][2];
-            rotated[1][0] = compareBoard[2][1];
-            rotated[0][1] = compareBoard[1][0];
-
-            // Rotate Edges
-            rotated[0][2] = compareBoard[0][0];
-            rotated[2][2] = compareBoard[0][2];
-            rotated[2][0] = compareBoard[2][2];
-            rotated[0][0] = compareBoard[2][0];
-
-            // Copy Center
-            rotated[1][1] = compareBoard[1][1];
-
-            compareBoard = rotated;
+            // Losing Condition
+            else if(rowSum == this.getPlayerTurn() * 2 && !Arrays.stream(row).anyMatch(x -> x == this.getAI_Turn()))
+            {
+                // Fill in the remaining space
+                for(int j = 0; j < 3; j++)
+                    if(row[j] == 0)
+                    {
+                        this.cPlayerMove(i, j);
+                        return;
+                    }
+            }
         }
 
-        return false;
+        // Check per column for winning move
+        for(int i = 0; i < 3; i++)
+        {
+            int[] col = { this.board[0][i], this.board[1][i], this.board[2][i] };
+            int colSum = Arrays.stream(col).sum();
+            // Dependent on the AI's turn number
+
+            // Winning Condition
+            if(colSum == this.getAI_Turn() * 2 && !Arrays.stream(col).anyMatch(x -> x == this.getPlayerTurn()))
+            {
+                // Fill in the remaining space
+                for(int j = 0; j < 3; j++)
+                    if(col[j] == 0)
+                    {
+                        this.cPlayerMove(i, j);
+                        return;
+                    }
+            }
+
+            // Losing Condition
+            else if(colSum == this.getPlayerTurn() * 2 && !Arrays.stream(col).anyMatch(x -> x == this.getAI_Turn()))
+            {
+                // Fill in the remaining space
+                for(int j = 0; j < 3; j++)
+                    if(col[j] == 0)
+                    {
+                        this.cPlayerMove(j, i);
+                        return;
+                    }
+            }
+        }
+
+        // Check diagonals
+        for(int i = 0; i < 2; i++)
+        {
+            int[] diagonal = new int[3];
+
+            if(i == 0)
+            {
+                System.out.println("Check left diagonal");
+                diagonal[0] = this.board[0][0];
+                diagonal[1] = this.board[1][1];
+                diagonal[2] = this.board[2][2];
+            }
+            else
+            {
+                System.out.println("Check right diagonal");
+                diagonal[0] = this.board[0][2];
+                diagonal[1] = this.board[1][1];
+                diagonal[2] = this.board[2][0];
+            }
+
+            int diagSum = Arrays.stream(diagonal).sum();
+
+            // Dependent on the AI's turn number
+
+            // Winning Condition
+            if(diagSum == this.getAI_Turn() * 2 && !Arrays.stream(diagonal).anyMatch(x -> x == this.getPlayerTurn()))
+            {
+                System.out.println("Checking Winning Condition");
+                // Fill in the remaining space
+                if(i == 0)
+                {
+                    if(this.board[0][0] == 0) {cPlayerMove(0,0); return;}
+                    else if(this.board[1][1] == 0) {cPlayerMove(1,1); return;}
+                    else if(this.board[2][2] == 0) {cPlayerMove(2,2); return; }
+                }
+                else {
+                    if(this.board[0][2] == 0) {cPlayerMove(0,2); return;}
+                    else if(this.board[1][1] == 0) {cPlayerMove(1,1); return;}
+                    else if(this.board[2][0] == 0) {cPlayerMove(2,0); return; }
+                }
+                System.out.println("[ERROR] Winning Move not Found");
+            }
+
+            // Losing Condition
+            else if(diagSum == this.getPlayerTurn() * 2 && !Arrays.stream(diagonal).anyMatch(x -> x == this.getAI_Turn()))
+            {
+                System.out.println("Checking Losing Condition");
+                // Fill in the remaining space
+                if(i == 0)
+                {
+                    if(this.board[0][0] == 0) {cPlayerMove(0,0); return;}
+                    else if(this.board[1][1] == 0) {cPlayerMove(1,1); return;}
+                    else if(this.board[2][2] == 0) {cPlayerMove(2,2); return; }
+                }
+                else {
+                    if(this.board[0][2] == 0) {cPlayerMove(0,2); return;}
+                    else if(this.board[1][1] == 0) {cPlayerMove(1,1); return;}
+                    else if(this.board[2][0] == 0) {cPlayerMove(2,0); return; }
+                }
+                System.out.println("[ERROR] Losing Move not Found");
+            }
+        }
+
+        // No winning move: execute random move
+        while(true)
+        {
+            Random rand = new Random(LocalTime.now().getNano());
+            int row = rand.nextInt(3);
+            int col = rand.nextInt(3);
+
+            // Attempt to move
+            if(this.board[row][col] == 0)
+            {
+                this.cPlayerMove(row, col);
+                return;
+            }
+        }
     }
 
     /**

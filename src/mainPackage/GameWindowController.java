@@ -88,7 +88,8 @@ public class GameWindowController implements EventHandler<Event>
                         case 0: // Random
                             this.gameInstance.AI_randomMove();
                             break;
-                        case 1: // Pre-defined Table
+                        case 1: // Level 1
+                            this.gameInstance.AI_genericMove();
                             break;
                         case 2: // Best Move
                             this.gameInstance.AI_bestMove();
