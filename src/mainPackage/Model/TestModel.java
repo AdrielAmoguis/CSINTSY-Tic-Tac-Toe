@@ -7,7 +7,7 @@ public class TestModel {
         Scanner kb = new Scanner(System.in);
         Game game = new Game();
         // Human starts first
-        game.newGame(2);
+        game.newGame(1);
         /* Human Wins
         System.out.println("Game status: " + game.getStatus());
         game.cPlayerMove(0,0);
