@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="52aca9a8-b29e-4574-b841-e25053f24d49" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/MCO2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/MCO2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MCO2/mainPackage/GameWindow.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MCO2/mainPackage/GameWindow.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mainPackage/GameWindow.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/mainPackage/GameWindow.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mainPackage/GameWindowController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mainPackage/GameWindowController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mainPackage/MainWindowController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mainPackage/MainWindowController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mainPackage/Model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mainPackage/Model/Game.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1mypkGYnd2EJVRKyES9FJyvrKam" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../JavaFX/lib" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="mainPackage.Main" />
+      <module name="MCO2" />
+      <option name="VM_PARAMETERS" value="--module-path &quot;C:\JavaFX\lib&quot; --add-modules javafx.controls,javafx.fxml" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="52aca9a8-b29e-4574-b841-e25053f24d49" name="Default Changelist" comment="" />
+      <created>1610475829050</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1610475829050</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+</project>

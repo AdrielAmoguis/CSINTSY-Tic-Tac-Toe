@@ -39,6 +39,9 @@ public class GameWindowController implements EventHandler<Event>
     @FXML
     Button backButton;
 
+    @FXML
+    Button newRoundButton;
+
     // Controller Constructor
     public GameWindowController(int rationality, boolean playAsX)
     {
@@ -118,11 +121,24 @@ public class GameWindowController implements EventHandler<Event>
                         displayPrompt("If you are seeing this, this is a bug.");
                 }
                 this.timeline.stop();
+                this.backButton.setDisable(false);
+                this.newRoundButton.setDisable(false);
             }
 
         }));
             this.timeline.setCycleCount(Animation.INDEFINITE);
             this.timeline.play();
+
+        // Disable the back button
+        this.backButton.setDisable(true);
+
+        // Disable the nextRound button
+        this.newRoundButton.setDisable(true);
+
+        // Display Start Message
+        String playerStart = new String(this.gameInstance.getCurrentPlayer() == this.gameInstance.getPlayerTurn() ? "Human" : "Computer");
+        String otherPlayer = new String(this.gameInstance.getCurrentPlayer() == this.gameInstance.getPlayerTurn() ? "Computer" : "Human");
+        this.displayPrompt(String.format("%s is X\n%s is O\n%s Start", playerStart, otherPlayer, playerStart));
     }
 
     // Main Handler
@@ -186,6 +202,36 @@ public class GameWindowController implements EventHandler<Event>
 
                 // Window Options
                 primaryStage.setTitle("Tic-Tac-Toe | AMOGUIS & SUN");
+                primaryStage.setResizable(false);
+
+                // Launch Window
+                primaryStage.setScene(new Scene(root));
+                primaryStage.show();
+            }
+            else if(button.getId().equals(this.newRoundButton.getId()))
+            {
+                // Start a new round (replace current window with another game state
+                // Load main primaryStage
+                Stage primaryStage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
+
+                // Set custom constructor
+                GameWindowController controller = new GameWindowController(this.rationality, this.gameInstance.getPlayerTurn() != 1);
+
+                // Load the FXML File
+                Parent root = null;
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("GameWindow.fxml"));
+                loader.setController(controller);
+                try
+                {
+                    root = loader.load();
+                }
+                catch(Exception ex)
+                {
+                    ex.printStackTrace();
+                }
+
+                // Window Options
+                primaryStage.setTitle("Tic-Tac-Toe Game Window | AMOGUIS & SUN");
                 primaryStage.setResizable(false);
 
                 // Launch Window

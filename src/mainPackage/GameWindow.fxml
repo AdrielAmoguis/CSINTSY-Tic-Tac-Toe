@@ -9,7 +9,6 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="656.0" prefWidth="584.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane fx:id="mainGrid" gridLinesVisible="true" layoutX="60.0" layoutY="31.0" prefHeight="435.0" prefWidth="467.0">
@@ -30,7 +29,12 @@
             <Font name="Lucida Console" size="14.0" />
          </font>
       </TextArea>
-      <Button fx:id="backButton" layoutX="217.0" layoutY="608.0" mnemonicParsing="false" onAction="#handle" prefHeight="31.0" prefWidth="154.0" text="Back">
+      <Button fx:id="backButton" layoutX="134.0" layoutY="608.0" mnemonicParsing="false" onAction="#handle" prefHeight="31.0" prefWidth="154.0" text="Back">
+         <font>
+            <Font name="Comic Sans MS Bold" size="20.0" />
+         </font>
+      </Button>
+      <Button fx:id="newRoundButton" layoutX="299.0" layoutY="608.0" mnemonicParsing="false" onAction="#handle" prefHeight="31.0" prefWidth="154.0" text="Next Round">
          <font>
             <Font name="Comic Sans MS Bold" size="20.0" />
          </font>

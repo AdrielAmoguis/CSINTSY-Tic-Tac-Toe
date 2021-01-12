@@ -181,7 +181,7 @@ public class Game implements Minimax{
                 for(int j = 0; j < 3; j++)
                     if(col[j] == 0)
                     {
-                        this.cPlayerMove(i, j);
+                        this.cPlayerMove(j, i);
                         return;
                     }
             }
@@ -206,14 +206,14 @@ public class Game implements Minimax{
 
             if(i == 0)
             {
-                System.out.println("Check left diagonal");
+                //System.out.println("Check left diagonal");
                 diagonal[0] = this.board[0][0];
                 diagonal[1] = this.board[1][1];
                 diagonal[2] = this.board[2][2];
             }
             else
             {
-                System.out.println("Check right diagonal");
+                //System.out.println("Check right diagonal");
                 diagonal[0] = this.board[0][2];
                 diagonal[1] = this.board[1][1];
                 diagonal[2] = this.board[2][0];
@@ -226,7 +226,7 @@ public class Game implements Minimax{
             // Winning Condition
             if(diagSum == this.getAI_Turn() * 2 && !Arrays.stream(diagonal).anyMatch(x -> x == this.getPlayerTurn()))
             {
-                System.out.println("Checking Winning Condition");
+                //System.out.println("Checking Winning Condition");
                 // Fill in the remaining space
                 if(i == 0)
                 {
@@ -245,7 +245,7 @@ public class Game implements Minimax{
             // Losing Condition
             else if(diagSum == this.getPlayerTurn() * 2 && !Arrays.stream(diagonal).anyMatch(x -> x == this.getAI_Turn()))
             {
-                System.out.println("Checking Losing Condition");
+                //System.out.println("Checking Losing Condition");
                 // Fill in the remaining space
                 if(i == 0)
                 {

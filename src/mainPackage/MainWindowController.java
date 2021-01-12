@@ -41,7 +41,6 @@ public class MainWindowController implements EventHandler<Event>
         this.rationalityDropdown.getItems().add(new String("Level 0: Random"));
         this.rationalityDropdown.getItems().add(new String("Level 1: Hard-Coded Rules"));
         this.rationalityDropdown.getItems().add(new String("Level 2: Heuristic Search Strategies"));
-        this.rationalityDropdown.getItems().add(new String("Level 3: Artificial Intelligence"));
 
         // Disable Start Game Button
         this.startGame.setDisable(true);
