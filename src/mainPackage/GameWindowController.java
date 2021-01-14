@@ -111,10 +111,10 @@ public class GameWindowController implements EventHandler<Event>
                     case 0: // Tie
                         displayPrompt("It's a tie!");
                         break;
-                    case 1: // AI Wins
+                    case 10: // AI Wins
                         displayPrompt("Computer Wins!");
                         break;
-                    case -1: // Player Wins
+                    case -10: // Player Wins
                         displayPrompt("Human Wins!");
                         break;
                     default:

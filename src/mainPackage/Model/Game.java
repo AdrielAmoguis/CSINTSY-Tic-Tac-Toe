@@ -36,8 +36,8 @@ public class Game implements Minimax{
 
     public static final int ONGOING = 999;
     public static final int DRAW = 0;
-    public static final int AI_WIN = 1;
-    public static final int PLAYER_WIN = -1;
+    public static final int AI_WIN = 10;
+    public static final int PLAYER_WIN = -10;
 
 
     public Game(){
@@ -90,7 +90,7 @@ public class Game implements Minimax{
                 if (board[row][col] == 0){
                     board[row][col] = AI_Turn;
                     // get the score after attempting this move
-                    int score = checkStatus(board);
+                    int score = checkStatus(board, 0);
                     // revert back to original board state
                     board[row][col] = 0;
                     // if move is a winning move for AI
@@ -283,7 +283,7 @@ public class Game implements Minimax{
      * Either ONGOING, PLAYER_WIN/AI_WIN, or DRAW.
      */
     public void updateStatus(){
-        status = checkStatus(board);
+        status = checkStatus(board, 0);
     }
 
     /**
@@ -292,33 +292,49 @@ public class Game implements Minimax{
      * Returns one of the following: -1 : AI_WIN | 1 : PLAYER_WIN | 0 : TIED | 999 : ONGOING
      * @return returns the current status of the game
      */
-    public int checkStatus(int[][] board) {
+    public int checkStatus(int[][] board, int depth) {
         // check if there is already a winner
         // check rows
         for (int row = 0; row < ROWS; row++){
             if (board[row][0] == board[row][1] && board[row][0] == board[row][2] && board[row][0] != 0){
                 int winner = board[row][0];
                 // if the winner is the AI, return macro for AI
-                return winner == AI_Turn ? AI_WIN : PLAYER_WIN;
+                if (winner == AI_Turn){
+                    return AI_WIN - depth; // the bigger the depth, the score becomes worse
+                }
+                else
+                    return PLAYER_WIN + depth; // the lower the depth, the score becomes better
             }
         }
         // check columns
         for (int col = 0; col < COLS; col++){
             if (board[0][col] == board[1][col] && board[0][col] == board[2][col] && board[0][col] != 0){
                 int winner = board[0][col];
-                return winner == AI_Turn ? AI_WIN : PLAYER_WIN;
+                if (winner == AI_Turn){
+                    return AI_WIN - depth; // the bigger the depth, the score becomes worse
+                }
+                else
+                    return PLAYER_WIN + depth; // the lower the depth, the score becomes better
             }
         }
         // check right diagonal
         if (board[0][0] == board[1][1] && board[0][0] == board[2][2] && board[0][0] != 0){
             int winner = board[0][0];
-            return winner == AI_Turn ? AI_WIN : PLAYER_WIN;
+            if (winner == AI_Turn){
+                return AI_WIN - depth; // the bigger the depth, the score becomes worse
+            }
+            else
+                return PLAYER_WIN + depth; // the lower the depth, the score becomes better
         }
 
         // check left diagonal
         if (board[0][2] == board[1][1] && board[0][2] == board[2][0] && board[0][2] != 0){
             int winner = board[0][2];
-            return winner == AI_Turn ? AI_WIN : PLAYER_WIN;
+            if (winner == AI_Turn){
+                return AI_WIN - depth; // the bigger the depth, the score becomes worse
+            }
+            else
+                return PLAYER_WIN + depth; // the lower the depth, the score becomes better
         }
 
         // check if draw
@@ -347,11 +363,12 @@ public class Game implements Minimax{
     public void AI_bestMove(){
         int bestScore = Integer.MIN_VALUE;
         int targetRow = 999, targetCol= 999;
+        int depth = 0;
         for(int row = 0; row < ROWS; row++){
             for(int col = 0; col < COLS; col++){
                 if(board[row][col] == 0){
                     board[row][col] = AI_Turn;
-                    int score = minimax(board, false);
+                    int score = minimax(board, false, depth);
                     if (score > bestScore){
                         bestScore = score;
                         targetRow = row;
@@ -452,8 +469,8 @@ public class Game implements Minimax{
 
 
     @Override
-    public int minimax(int[][] board, boolean isMax) {
-        int status = checkStatus(board);
+    public int minimax(int[][] board, boolean isMax, int depth) {
+        int status = checkStatus(board, depth);
         int bestScore;
         // Have reached a leaf node (base case)
         if (status != 999)
@@ -467,7 +484,7 @@ public class Game implements Minimax{
                     if (board[row][col] == 0){
                         board[row][col] = AI_Turn;
                         // compute score
-                        int score = minimax(board, false);
+                        int score = minimax(board, false, depth + 1);
                         // reset board state
                         board[row][col] = 0;
                         bestScore = Math.max(score, bestScore);
@@ -484,7 +501,7 @@ public class Game implements Minimax{
                     if (board[row][col] == 0){
                         board[row][col] = playerTurn;
                         // compute score
-                        int score = minimax(board, true);
+                        int score = minimax(board, true, depth + 1);
                         // reset board state
                         board[row][col] = 0;
                         bestScore = Math.min(score, bestScore);
